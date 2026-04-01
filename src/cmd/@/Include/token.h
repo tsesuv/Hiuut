@@ -8,7 +8,6 @@
 ////////////////////////////////////////////////////////
 
 #include "@.h"
-#include "str.h"
 
 ////////////////////////////////////////////////////////
 
@@ -33,7 +32,7 @@ typedef enum
 
 typedef struct
 {	tkType type;
-	str dat;
+	char *dat;
 	unsigned long int line;
 } Token;
 
@@ -49,7 +48,7 @@ typedef struct tkList
 
 Token tknnew(void);
 Token tknclne(Token *t);
-Token tknset(const tkType type, const str dat);
+Token tknset(const tkType type, const char *dat);
 
 tkList *tklnew(tkList *head);
 bool tklset(tkList *L, const Token t);
@@ -57,7 +56,7 @@ bool tklset(tkList *L, const Token t);
 bool tknfree(Token *t);
 bool tklfree(tkList *L);
 
-tkList *tokenalizer(const str s);
+tkList *tokenalizer(const char *s);
 tkList *parser(tkList *L);
 
 ////////////////////////////////////////////////////////
@@ -66,7 +65,7 @@ Token tknnew(void)
 {	Token t;
 
 	t.type = TK_VOID;
-	t.dat = strset("");
+	t.dat = "";
 	t.line = 0;
 
 	return t;
@@ -75,17 +74,17 @@ Token tknnew(void)
 Token tknclne(Token *t)
 {	Token v = tknnew();
 
-	v.dat = strclne(&t->dat);
+	cclne(v.dat, t->dat);
 	v.line = t->line;
 
 	return v;
 }
 
-Token tknset(const tkType type, const str dat)
+Token tknset(const tkType type, const char *dat)
 {	Token t;
 
 	t.type = type;
-	t.dat = dat;
+	t.dat = (char *)dat;
 	t.line = 0;
 
 	return t;
@@ -96,7 +95,7 @@ tkList *tklnew(tkList *head)
 
 	L->head = head == NULL ? L : head; // 仮にここで常にNULLにしてるとcaptもNULLになっちゃう問題があるからこうしてる
 	L->token.type = TK_VOID;
-	L->token.dat = strset("");
+	L->token.dat = "";
 	L->token.line = 0;
 	L->tkCnt = 0;
 	L->next = NULL;
@@ -148,22 +147,32 @@ bool tklfree(tkList *L)
 	return true;
 }
 
-tkList *tokenalizer(const str s)
+tkList *tokenalizer(const char *s)
 {	tkList *L = tklnew(NULL);
 
-	str tmp = strnew(0);
+	char *tmp = (char *)malloc(sizeof(char));
+	unsigned long int k = 0;
 
-	for(unsigned long int i = 0; i < strlen(s); i++)
-	{	if(strget(s)[i] == '+')
-		{	tklset(L, tknset(TK_NUM, tmp));
-			strfree(&tmp);
-			tmp = strnew(0);
+	unsigned long int memsize = 1;
+
+	for(unsigned long int i = 0; i < length(s); i++)
+	{	if(memsize <= k)
+		{	memsize *= 2;
+			tmp = (char *)realloc(tmp, memsize * sizeof(char));
 		}
 
-		strpush(&tmp, strget(s)[i]);
+		if(s[i] == '+')
+		{	tklset(L, tknset(TK_NUM, tmp));
+			free(tmp);
+			tmp = (char *)malloc(sizeof(char));
+			k = 0;
+		}
+
+		tmp[k] = s[i];
+		k++;
 	}
 
-	strfree(&tmp);
+	free(tmp);
 
 	return L;
 }

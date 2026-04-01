@@ -2,27 +2,27 @@
 /* Version: 1.0.3 Pre-Alpha */
 /* Created by UnSynk, tsesuv notsel */
 
-#include "@.h"
-#include "str.h"
-#include "token.h"
+#include "Include/@.h"
+#include "Include/token.h"
 
 ////////////////////////////////////////////////////////
 
 int main(void)
-{	Token t = tknset(TK_STR, strset("Token2"));
+{	Token t = tknset(TK_STR, "Token2");
 
-	txoutln(strset("Token: %d (type), %s"), t.type, strget(t.dat));
+	println("Token: %d (type), %s", t.type, t.dat);
 
 	tkList *L = tklnew(NULL);
 	tklset(L, t);
-	tklset(L, tknset(TK_STR, strset("String")));
+	tklset(L, tknset(TK_STR, "String"));
 
 	L = L->head;
-	txoutln(strset("Head: %s"), strget(L->token.dat));
-	txoutln(strset("Next: %s"), strget(L->next->token.dat));
-	txoutln(strset("Next: %s"), strget(L->next->next->token.dat));
-	txoutln(strset(""));
-	txoutln(strset("Head->end: %s"), strget(L->head->end->token.dat));
+	println("Next: %s", L->next->token.dat);
+	println("Next: %s", L->next->next->token.dat);
+	println("");
+	L = L->next;
+	println("Now: %s", L->token.dat);
+	println("Head->end: %s", L->head->end->token.dat);
 
 	tklfree(L);
 
@@ -32,29 +32,29 @@ int main(void)
 ////////////////////////////////////////////////////////
 
 bool version(void)
-{	txoutln(strset("      UnSynk @ Compiler"));
-	txoutln(strset("------------------------------"));
-	txoutln(strset(" Version: 1.0.3 Pre-Alpha"));
-	txoutln(strset(" Build  : 2026021303"));
-	txoutln(strset("------------------------------"));
-	txoutln(strset("enter `@ /?' you get more helps."));
+{	println("      UnSynk @ Compiler");
+	println("------------------------------");
+	println(" Version: 1.0.3 Pre-Alpha");
+	println(" Build  : 2026021303");
+	println("------------------------------");
+	println("enter `@ /?' you get more helps.");
 
 	return true;
 }
 
 bool help(void)
-{	txoutln(strset("      UnSynk @ Compiler"));
-	txoutln(strset("------------------------------"));
-	txoutln(strset("Usage:"));
-	txoutln(strset("	@ </src:[\\file\\path.@]> </out:[\\file\\path]> </detail:{true|false}>"));
-	txoutln(strset("------------------------------"));
-	txoutln(strset("Options:"));
-	txoutln(strset("	/src		:	Configuration source file path."));
-	txoutln(strset("	/?			:	Print this help message."));
-	txoutln(strset("	/help		:	Print this help message."));
-	txoutln(strset("	/h			:	Print this help message."));
-	txoutln(strset("	/v			:	Print software informations."));
-	txoutln(strset("	/version	:	Print software informations."));
+{	println("      UnSynk @ Compiler");
+	println("------------------------------");
+	println("Usage:");
+	println("	@ </src:[\\file\\path.@]> </out:[\\file\\path]> </detail:{true|false}>");
+	println("------------------------------");
+	println("Options:");
+	println("	/src		:	Configuration source file path.");
+	println("	/?			:	Print this help message.");
+	println("	/help		:	Print this help message.");
+	println("	/h			:	Print this help message.");
+	println("	/v			:	Print software informations.");
+	println("	/version	:	Print software informations.");
 
 	return true;
 }
