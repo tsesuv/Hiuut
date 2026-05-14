@@ -1,7 +1,7 @@
 ﻿# intro.@
 # これでコメント。
 
->inc 'cslio.@h" # ConSooLe Input/Output . @ language Header
+>inc 'cslio.@h" # ConSoLe Input/Output . @ language Header
 
 mdl intro # Javaのクラス的なのを採用
 {	int main public  ags ag
