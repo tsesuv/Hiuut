@@ -1,0 +1,10 @@
+/inc 'cslio.@h"
+
+mdl ptr
+[	int main ags ag /public
+	[	byte$ls code <- [$0, $0, $cd, $aa]
+		byte$p p <- code
+		sys:txoutln @code
+		sys:txoutln @(code + 1)
+    ]
+]

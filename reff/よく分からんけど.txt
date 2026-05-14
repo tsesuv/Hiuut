@@ -1,0 +1,34 @@
+; 適当に変な言語でも作ってみる
+
+"include(abstio)
+
+"ept(main)
+; ept: エントリポイント、最初に実行するべき関数の名前。
+
+pbl #main()
+[	txoutln("(Hello, world!))
+
+	txoutln("(2 + 3 = "$(add(2, 3))))
+
+	eval(add(2, 3))
+
+	ret(0)
+]
+
+prv #add(#x, #y)
+[	ret(#+(x,y))
+]
+
+prv eval(*p)
+[	ret(
+		state(p<style>)
+		[	func?
+				p()
+				cplete
+
+			lit?
+				p
+				cplete
+		]
+	)
+]

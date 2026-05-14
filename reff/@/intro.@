@@ -1,73 +1,81 @@
-# intro.@
+﻿# intro.@
 # これでコメント。
-# 後述の方法で
-# 複数行コメントも
-# 当然できる。
 
-"i(sysio.@h) # sysioはSYStem Input/Output。biosにしようと思ったけどそれだと実際のbiosレベルで触れるいろいろと被っちゃうからこうした
+>inc 'cslio.@h" # ConSooLe Input/Output . @ language Header
 
 mdl intro # Javaのクラス的なのを採用
-@v	int main ags ag @public
-	@v	int demo @public <- 32
+{	int main public  ags ag
+	{	int demo public <- 32
 		# mdl内変数ではpublicを省略時はprivate。
 
-		@sys:txoutln "(Hello, world!)
-		@sys:txoutln demo ~str # ~は型変換演算子
+		sys:txoutln 'Hello, world!"
+		sys:txoutln demo ~str # ~は型変換演算子
 
 		int demo2 <- 16
-		int List$ls <- @intro:moreFunction demo, demo2 # リストは変数に$をつけた後にlsと指定する。これはプロパティ構文という構文である。
+		int List[] <- intro:moreFunction demo, demo2
+		sys:txoutln List[0]
 
 		int k <- 0, k++, for k < 5
-		@v	int i <- 0, i++, for i < 10
-			@v	@sys:txoutln "(i: "$(i)%nk: "$(k))
-			@^ # 余談だが、この言語の条件式は0 < a < 10とかって書くこともできる。ただし<=、>、>=がないのには気を付けてね。あるのは=(等価)、!=(非等価)、<(未満)、!<(非未満)だけ。
-				 # もしa<=b,a>b,a>=bが使いたいなら、b!<a(a<=b),b<a(a<b),a!<b(a>=b)と書くことになる。
-		@^
+		{	int i <- 0, i++, for i < 10
+			{	sys:txoutln 'i: ", i
+				sys:txoutln 'k: ", k
+			}
+		}
+		>>?	whileは
+			while(a = b)
+			{	...
+			}
+			な標準な感じになるかな
+		?<<
 
-		str s1 <- @sys:txin;errno # errnoを使いたいときは後述のrtry用にこれをつける必要あり。再送する場所を記録するってわけ
-								  # なお当然ここで付けた後にほかで上書きしたら意味がなくなる。多分警告として出すかなぁ
-		s1.fail if # @xx:yy.zzやxx.yyはメンバ関数。
-		@v	@sys:txoutln "(Invalid input) # ちなみに@sys:txout.noflushや@sys:txoutln.noflushにすると
-										  # バッファフラッシュをしないでおいておくこともできる。デフォルトは呼び出すとフラッシュされるようになっている。
-			errno "err(ERROR_INPUT_STR_INVALID)
-			>>? errnoはretと排他の関係にある構文で、他言語でいう例外処理的な扱いになる。
-				errnoは上位でキャッチできる構造(エラーコード数値でもエラーコード文字列でも)を返す必要がある。
-				errnoは上位でhitすることをすることで処理でき、その処理が終わったら
-					元のerrnoの次の行から再開する(back)か
-					そのcatchしたところと同じ関数で再送する(ret)か
-					errnoの起こった行を再送する(rtry)か
-					プロセスをキルする(die)(ただしOSなし環境、直接バイナリを実行している環境でdieできるかは知らん。HALTにするしかないかなぁ？)
-				必要がある。
+		sys:txoutln 2 ^ 3 ~str # = 8
 
-				なおエラー処理、例外処理として使いたいからerrnoっていう名前だけど、DOS ASMのINT 0x21みたいな割込み命令として使うもOK。
+		str s1 <- sys:txin
+		s1.fail if # xx:yy.zzやxx.yyはメンバ関数。
+		{	sys:txoutln 'Invalid input" # ちなみにsys:txout.noflushやsys:txoutln.noflushにすると
+						    # バッファフラッシュをしないでおいておくこともできる。デフォルトは呼び出すとフラッシュされるようになっている。
+			trap $D # $なんたらうんたら は見ての通りの16進数。本当は#うんたらかんたらも用意しておきたかったけどコメントで使ってるから仕方なし。
+			>>? trapは所謂割り込み。他言語でいう例外処理的な扱いになる。
+				まぁ実際はDOS ASMのINT 0x21やINT 0x0Eみたいな割込み命令として使うが標準仕様だけど。
+				引数とかはとりあえず未定。トラップ番号ぐらいは入れるつもりではある。
 			?<<
-		@^
+		}
 
 		ret 0 # return。
-	@^
 
-	int moreFunction$ls ags ag @private # プロパティ構文は関数定義、宣言でも同様。
-	@v	int tmp <- @sys:getag ag, 0 # こうなるのかなぁ・・・？わからん。
-		int tmp2 <- @sys:getag ag, 1 # ただこれならいろいろ便利っちゃ便利ではあるかなぁ。存在しない引数を受け取る可能性はあれど、
-									  # 呼び出し側で@xx:yy ,ag2みたいに書くことでデフォルト引数みたいなこともできないことはないからなぁ
+	int moreFunction[] private ags ag
+	{	int tmp <- sys:getag ag, 0 # こうなるのかなぁ・・・？わからん。
+		int tmp2 <- sys:getag ag, 1 # ただこれならいろいろ便利っちゃ便利ではあるかなぁ。存在しない引数を受け取る可能性はあれど、
+									# 呼び出し側でxx:yy ,ag2みたいに書くことでデフォルト引数みたいなこともできないことはないからなぁ
 
 		tmp <- tmp ? tmp2 # <-は代入記号
 		tmp2 <- tmp ? tmp2 # ?はXOR演算子
-		tmp <- tmp ? tmp2 #ちなみにOR演算子は|、AND演算子は&、NOT演算子は!。全ビットに対してやる場合は|_,&_,!_みたいに書く
+		tmp <- tmp ? tmp2 # ちなみにOR演算子は|、AND演算子は&、NOT演算子は!。
+				  # a | bとかa & bとかa ? bとか!aとか、これらはすべて論理式でもありかつ条件式でもある。
 
 		ret [tmp, tmp2]
-	@^
-@^
+	}
+}
 
->>? 他にも、
-	"asm(RET 0)
-	"f(C:\Windows\notepad.exe)
-	"f(/bin/sh)
-	"d(C:\Users\)
-	"d(/etc/Apache2)
-	"exe(C:\Windows\system32\ping.exe localhost)
-	"exe(/bin/ls -la)
-	"evl(@sys:txoutln 'Hi!")
-	みたいなことも書ける。上からインラインアセンブリ、ファイルパス指定(Windows)、ファイルパス指定(Linux)、ディレクトリ指定(Windows)、ディレクトリ指定(Linux)、
-	実行(Windows、ファイルの実行)、実行(Linux、ファイルの実行)、評価(プログラムの実行)。
+>>?	文字列strは勝手に成長とかしてくれる便利な配列、文字単体はchar。文字列は'文字列"、文字単体はー、;ぐらいしかまともに使えそうな記号がない...
+	[;H;, ;i;, ;\0;]ってことかぁ？
+
+	ポインタのLook upは@。ポインタ変数pに対してLook upは@p。
+	但し今の所ポインタ変数の宣言の記号が決まってない。どうしよ。適当に*...？その場合アドレス獲得も*...？
+	つまり:
+		mdl ptr public
+		{	int main public
+			{	int *p
+				int a <- 28
+				int b
+
+				p <- *a
+				b <- @p
+
+				ret 0
+			}
+		}
+	こんな感じ...？でいいか。
+
+	ポインタに関しては@0とか@$A0000とかも当然許容する。許容しないと辛い。
 ?<<

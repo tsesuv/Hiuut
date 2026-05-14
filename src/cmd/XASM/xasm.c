@@ -1,11 +1,29 @@
 /* UnSynk XMC Assembler */
-/* Version: 1.0.0 */
+/* Build: 20260507XXXX */
 /* Created by UnSynk, tsesuv notsel */
-
-#include "str.h"
 
 #include <stdio.h>
 
-int main(void)
-{	return 0;
+typedef enum {false, true} bool;
+
+FILE *If;
+FILE *Of;
+
+bool help(void);
+char upper(char c);
+
+int main(int ac, char **av)
+{	if(ac < 2) return help();
+
+	return 0;
+}
+
+bool help(void)
+{	return true;
+}
+
+char upper(char c)
+{	if(('@' < c && c < '[') || ('`' < c && c < '{')) return c & 0x5F;
+
+	return 0;
 }

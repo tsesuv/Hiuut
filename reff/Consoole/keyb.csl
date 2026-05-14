@@ -1,0 +1,3 @@
+>>? PIPE Is Pipeline Environment ?<<
+dvsin dvs#keyb |Y pass #cslout |v keyMap |: pass #keyboard
+>>? Get raw data from keyb (keyboard), then brunch, passthrough Console out at the same time remapping logical key map, and set '#keyboard" ?<<

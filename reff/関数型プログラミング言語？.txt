@@ -1,0 +1,8 @@
+[	mul(x) mod add1(x)
+] :=: cpxmth(x)
+
+[	x + 1
+] :=: add1(x)
+
+[	2x
+] :=: mul2(x)

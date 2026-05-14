@@ -1,6 +1,7 @@
-# hello.chs tsesuv notsel 2025/10/11
+# hello.chs tsesuv notsel 2026/04/26
 # MAINから実行される。大文字小文字の区別はない。
-[DEF::MAIN::(
-	OUT::'Hello, world!%j"' # "はNULL。
-	# %はエスケープシーケンス。実質キャレット。
-)] # [](ブラケット、保持評価演算子)は()とは違い::が前後になくても保持する。結果を返せるってこった。
+(RET:(
+	DEF:MAIN:(
+			OUT:'Hello, world!%j"' # "はNULL。
+		)
+))
