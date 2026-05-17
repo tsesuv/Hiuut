@@ -23,27 +23,11 @@ mdl case0
 ?<<
 
 >>?
-トークンで分解すると:
-
-TK_IDR(MDL)
-TK_NME(case0)
-TK_ENT(VOID)
-TK_SYM(LBLK)
-	TK_IDR(INT)
-	TK_NME(main)
-	TK_IDR(PUBLIC)
-	TK_ENT(VOID)
-	TK_SYM(LBLK)
-		TK_IDR(RET)
-		TK_NUM(#0)
-		TK_ENT(VOID)
-	TK_SYM(RBLK)
-	TK_ENT(VOID)
-TK_SYM(RBLK)
-TK_ENT(VOID)
-TK_EOF(VOID)
+トークンで分解したもの　はcase0.tknを参照のこと
+最終的なアセンブリコードはcase0.asmを参照のこと
 
 トークンとして用意するものは
+TK_VOID (Void)
 TK_ENT (Enter)
 TK_IDR (Identifer)
 TK_NME (Name)
@@ -51,6 +35,6 @@ TK_SYM (Symbol)
 TK_STR (String)
 TK_NUM (Number)
 TK_EOF (End of file)
-の7種類かな
+の8種類かな
 
 ?<<

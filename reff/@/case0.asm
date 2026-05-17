@@ -1,5 +1,6 @@
-; MDL NAME	:	case0
-; FUNC NAME	:	_main
-; FUNC SCP	:	@PUBLIC
-XOR EAX, EAX
-HALT
+global _start
+
+_start:
+	mov rax, 60
+	mov rsi, 0
+	syscall
