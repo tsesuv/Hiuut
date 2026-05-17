@@ -1,0 +1,40 @@
+mdl case0
+{	int main public
+	{	ret #0
+	}
+}
+
+>>?
+mdl case0
+{	int main public
+	{	ret 0
+	}
+}
+
+と
+
+mdl case0
+{	int main public
+	{	ret $0
+	}
+}
+
+と同一
+?<<
+
+>>?
+トークンで分解したもの　はcase0.tknを参照のこと
+最終的なアセンブリコードはcase0.asmを参照のこと
+
+トークンとして用意するものは
+TK_VOID (Void)
+TK_ENT (Enter)
+TK_IDR (Identifer)
+TK_NME (Name)
+TK_SYM (Symbol)
+TK_STR (String)
+TK_NUM (Number)
+TK_EOF (End of file)
+の8種類かな
+
+?<<
