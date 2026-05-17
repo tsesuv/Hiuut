@@ -1,19 +1,19 @@
-﻿# intro.@
-# これでコメント。
+; intro.@
+; これでコメント。
 
->inc 'cslio.@h" # ConSoLe Input/Output . @ language Header
+>inc 'cslio.@h" ; ConSoLe Input/Output . @ language Header
 
-mdl intro # Javaのクラス的なのを採用
-{	int main public  ags ag
+mdl intro ; Javaのクラス的なのを採用
+{	int main public ags ag
 	{	int demo public <- 32
-		# mdl内変数ではpublicを省略時はprivate。
+		; mdl内変数ではpublicを省略時はprivate。
 
 		sys:txoutln 'Hello, world!"
-		sys:txoutln demo ~str # ~は型変換演算子
+		sys:txoutln ~str demo ; ~は型変換演算子
 
 		int demo2 <- 16
 		int List[] <- intro:moreFunction demo, demo2
-		sys:txoutln List[0]
+		sys:txoutln ~str List[0]
 
 		int k <- 0, k++, for k < 5
 		{	int i <- 0, i++, for i < 10
@@ -28,41 +28,38 @@ mdl intro # Javaのクラス的なのを採用
 			な標準な感じになるかな
 		?<<
 
-		sys:txoutln 2 ^ 3 ~str # = 8
+		sys:txoutln ~str (2 ^ 3) ; = '8"
 
 		str s1 <- sys:txin
-		s1.fail if # xx:yy.zzやxx.yyはメンバ関数。
-		{	sys:txoutln 'Invalid input" # ちなみにsys:txout.noflushやsys:txoutln.noflushにすると
-						    # バッファフラッシュをしないでおいておくこともできる。デフォルトは呼び出すとフラッシュされるようになっている。
-			trap $D # $なんたらうんたら は見ての通りの16進数。本当は#うんたらかんたらも用意しておきたかったけどコメントで使ってるから仕方なし。
+		s1.fail if ; xx:yy.zzやxx.yyはメンバ関数。
+		{	sys:txoutln 'Invalid input" ; ちなみにsys:txout.noflushやsys:txoutln.noflushにすると
+									    ; バッファフラッシュをしないでおいておくこともできる。デフォルトは呼び出すとフラッシュされるようになっている。
+			trap $D ; $なんたらうんたら は見ての通りの16進数。因みに#うんたら は10進数。
 			>>? trapは所謂割り込み。他言語でいう例外処理的な扱いになる。
 				まぁ実際はDOS ASMのINT 0x21やINT 0x0Eみたいな割込み命令として使うが標準仕様だけど。
-				引数とかはとりあえず未定。トラップ番号ぐらいは入れるつもりではある。
 			?<<
 		}
 
-		ret 0 # return。
+		ret 0 ; return。
 
 	int moreFunction[] private ags ag
-	{	int tmp <- sys:getag ag, 0 # こうなるのかなぁ・・・？わからん。
-		int tmp2 <- sys:getag ag, 1 # ただこれならいろいろ便利っちゃ便利ではあるかなぁ。存在しない引数を受け取る可能性はあれど、
-									# 呼び出し側でxx:yy ,ag2みたいに書くことでデフォルト引数みたいなこともできないことはないからなぁ
+	{	int tmp <- sys:getag ag, 0  ; こうなるのかなぁ・・・？わからん。
+		int tmp2 <- sys:getag ag, 1 ; ただこれならいろいろ便利っちゃ便利ではあるかなぁ。存在しない引数を受け取る可能性はあれど、
+									; 呼び出し側でxx:yy ,ag2みたいに書くことでデフォルト引数みたいなこともできないことはないからなぁ
 
-		tmp <- tmp ? tmp2 # <-は代入記号
-		tmp2 <- tmp ? tmp2 # ?はXOR演算子
-		tmp <- tmp ? tmp2 # ちなみにOR演算子は|、AND演算子は&、NOT演算子は!。
-				  # a | bとかa & bとかa ? bとか!aとか、これらはすべて論理式でもありかつ条件式でもある。
+		tmp <- tmp ? tmp2  ; <-は代入記号
+		tmp2 <- tmp ? tmp2 ; ?はXOR演算子
+		tmp <- tmp ? tmp2  ; ちなみにOR演算子は|、AND演算子は&、NOT演算子は!。
+						   ; a | bとかa & bとかa ? bとか!aとか、これらはすべて論理式でもありかつ条件式でもある。
+						   ; つまりnビットの計算の結果でもあるしboolでもある。
 
 		ret [tmp, tmp2]
 	}
 }
 
->>?	文字列strは勝手に成長とかしてくれる便利な配列、文字単体はchar。文字列は'文字列"、文字単体はー、;ぐらいしかまともに使えそうな記号がない...
-	[;H;, ;i;, ;\0;]ってことかぁ？
+>>?	文字列strは勝手に成長とかしてくれる便利な配列、文字単体はchar。文字列は'文字列"、文字単体は`文字`。
 
 	ポインタのLook upは@。ポインタ変数pに対してLook upは@p。
-	但し今の所ポインタ変数の宣言の記号が決まってない。どうしよ。適当に*...？その場合アドレス獲得も*...？
-	つまり:
 		mdl ptr public
 		{	int main public
 			{	int *p
@@ -75,10 +72,8 @@ mdl intro # Javaのクラス的なのを採用
 				ret 0
 			}
 		}
-	こんな感じ...？でいいか。
-
+	こんな感じ
 	ポインタに関しては@0とか@$A0000とかも当然許容する。許容しないと辛い。
 
-	三項演算子...個人的には短い、限定した所で「選択」をする際にしか使わないのよね。Cでprintf("%s\n", bool ? a : b);と書くようなとき位。
-	そういう意味ではchose関数を用意してうまい事やる、のほうが面倒ではないような気がした。分からんわ。
+	三項演算子の代わりはchose。chose bool, A, B。A,Bは同一型でなければならない。
 ?<<
