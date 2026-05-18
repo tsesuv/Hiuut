@@ -2,90 +2,80 @@
 /* Build: 20260518XXXX */
 /* Created by UnSynk, tsesuv notsel */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "Include/@.h"
 #include "Include/token.h"
 
 FILE *infile;
 FILE *outfile;
-
-bit cmp(byte a, byte b);
-uint len(byte *p);
 
 int main(int ac, char **av)
 {	if(ac == 1)
 	{	return 0;
 	}
 
-	uint l = 0;
-	for(uint k = 0; k < ac; k++)
-	{	for(uint i = 0; i < len(av[k]); i++) l++;
-	}
-
+	uint l = catlen((byte **)av, ac);
 	byte *ag = (byte *)malloc((l + ac) * sizeof(byte));
-
-	l = 0;
-	for(uint k = 0; k < ac; k++)
-	{	for(uint i = 0; i < len(av[k]); i++)
-		{	ag[l++] = *(av[k] + i);
-		}
-		ag[l++] = 0;
-	}
+	bytecat(ag, (byte **)av, ac);
 
 	printf("Length: %d\n", l);
-
 	for(uint i = 0; i < l; i++) printf("%c ($%02X)\n", ag[i], ag[i]);
 
 	byte arg_in_opt[] = "/i";
 	byte arg_in_opt2[] = "/i:";
-
-	uint k = 0;
 	uint place = 0;
 	bit flag;
-	flag.f = 0;
-	for(uint i = 0; i < l; i++)
-	{	if(cmp(ag[i], arg_in_opt[k]).f || cmp(ag[i], arg_in_opt2[k]).f)
+	set(&flag, 0);
+
+	// 引数チェック部分
+	for(uint i = 0, k = 0; i < l; i++)
+	{	if(get(cmp(ag[i], arg_in_opt[k])) || get(cmp(ag[i], arg_in_opt2[k])))
 		{	k++;
-			if(cmp(ag[i], 0).f || cmp(ag[i], ':').f)
-			{	flag.f = 1;
+			if(get(cmp(ag[i], 0)) || get(cmp(ag[i], ':')))
+			{	set(&flag, 1);
 				place = ++i;
-				printf("Detect /i: %d\n", i);
+				printf("Detect /i: %d (p: %d)\n", i, place);
 				break;
-			} else flag.f = 0;
+			} else set(&flag, 0);
 		} else
 		{	k = 0;
-			flag.f = 0;
+			set(&flag, 0);
 		}
-	}
+	} // 引数
 
-	if(flag.f)
+	// ファイル名獲得
+	if(get(flag))
 	{	uint i = place;
 
+		// ファイル名長さ獲得
 		while(ag[i++]);
 
+		// 領域確保
 		byte *inname = (byte *)malloc((i - place) * sizeof(byte));
-
-		for(uint k = place; k < i; k++)
-		{	inname[k - place] = ag[k];
-		}
-
+		// 名前をフラット引数からコピー
+		byteset(inname, ag, place, i);
 		printf("fname: %s, name size: %d\n", inname, i - place);
-
-		infile = fopen(inname, "r");
+		infile = fopen(inname, "rb");
 
 		if(!infile)
 		{	printf("[ E ] @: main: fopen: Can't open file: %s\n", inname);
-		} else
-		{	byte c = 0;
-			byte r = 255;
+		} else // ファイルが存在する場合
+		{	printf("[ D ] @: main: Cat file: %s\n", inname);
 
-			printf("[ D ] @: main: Cat file: %s\n", inname);
+			uint fsize = getfsize(infile) + 1;
+			byte *text = (byte *)malloc(fsize * sizeof(byte));
+			text[fread(text, 1, fsize - 1, infile)] = 0;
+			
 
-			while(r)
-			{	r = fread(&c, 1, 1, infile);
-				putchar(c);
-			} printf("\n");
+			printf("READED TEXT (VALUE):\n%s\n", text);
 
+			Token t = tknnew();
+			tknset(&t, TK_IDR, "MDL");
+			printf("Token: %s(%s)\n", type2str(t.type), t.dat);
+			tknset(&t, TK_ENT, "");
+			printf("Token: %s(%s)\n", type2str(t.type), t.dat);
+			tknfree(&t);
+
+			free(text);
 			fclose(infile);
 		}
 
@@ -95,20 +85,4 @@ int main(int ac, char **av)
 	free(ag);
 
 	return 0;
-}
-
-bit cmp(byte a, byte b)
-{	bit x;
-
-	x.f = (a == b);
-
-	return x;
-}
-
-uint len(byte *p)
-{	byte *t = p;
-
-	while(*p++);
-
-	return p - t - 1;
 }
