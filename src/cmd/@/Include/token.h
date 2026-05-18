@@ -48,8 +48,8 @@ bit tknset(Token *t, tkType type, byte *d)
 {	bit x;
 
 	t->type = type;
-	for(uint i = 0; i < len(t->dat); i++) t->dat[i] = 0;
-	for(uint i = 0; i < len(d); i++) t->dat[i] = d[i];
+	bytefill(t->dat, 0, 0, lenn(t->dat));
+	byteset(t->dat, d, 0, 0, lenn(d));
 
 	x.f = 1;
 
