@@ -5,24 +5,6 @@ mdl case0
 }
 
 >>?
-mdl case0
-{	int main public
-	{	ret 0
-	}
-}
-
-と
-
-mdl case0
-{	int main public
-	{	ret $0
-	}
-}
-
-と同一
-?<<
-
->>?
 トークンで分解したもの　はcase0.tknを参照のこと
 最終的なアセンブリコードはcase0.asmを参照のこと
 
