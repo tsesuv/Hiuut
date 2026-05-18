@@ -1,5 +1,5 @@
 /* UnSynk @ Compiler */
-/* Build: 20260518XXXX */
+/* Build: 20260519XXXX */
 /* Created by UnSynk, tsesuv notsel */
 
 #include "Include/@.h"
@@ -23,19 +23,23 @@ int main(int ac, char **av)
 	byte arg_in_opt[] = "/i";
 	byte arg_in_opt2[] = "/i:";
 	uint place = 0;
-	bit flag[1];
+	bit flag[2];
 	set(&flag[0], 0);
+	set(&flag[1], 0);
 
 	// 引数チェック部分
 	for(uint i = 0, k = 0; i < l; i++)
 	{	if(get(cmp(ag[i], arg_in_opt[k])) || get(cmp(ag[i], arg_in_opt2[k])))
 		{	k++;
-			if(get(cmp(ag[i], 0)) || get(cmp(ag[i], ':')))
-			{	set(&flag[0], 1);
-				place = ++i;
+			set(&flag[0], 1);
+			if(get(cmp(ag[i], 0)) || get(cmp(ag[i], ':'))) // cmpa(ag + i, arg_in_opt)みたいに書きたいよなぁ...
+			{	place = ++i;
 				printf("Detect /i: %d (p: %d)\n", i, place);
-				break;
-			} else set(&flag[0], 0);
+				set(&flag[1], 1);
+			} else if(!get(flag[1])
+			{	k = 0;
+				set(&flag[0], 0);
+			}
 		} else
 		{	k = 0;
 			set(&flag[0], 0);

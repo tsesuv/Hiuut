@@ -1,5 +1,5 @@
 /* UnSynk @ language Token header */
-/* Build: 20260517XXXX */
+/* Build: 20260519XXXX */
 /* Created by UnSynk, tsesuv notsel */
 
 #ifndef TOKEN_H
@@ -48,6 +48,8 @@ bit tknset(Token *t, tkType type, byte *d)
 {	bit x;
 
 	t->type = type;
+	t->dat = (byte *)realloc(lenn(d) * sizeof(byte));
+
 	bytefill(t->dat, 0, 0, lenn(t->dat));
 	byteset(t->dat, d, 0, 0, lenn(d));
 
