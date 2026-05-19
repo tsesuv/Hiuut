@@ -30,6 +30,7 @@ uint len(byte *p);
 uint lenn(byte *p);
 bit cmp(byte a, byte b);
 bit cmpa(byte *a, byte *b);
+bit cmpe(byte *a, byte *b, uint len);
 byte get(bit b);
 byte set(bit *b, byte v);
 
@@ -107,13 +108,19 @@ bit cmp(byte a, byte b)
 
 bit cmpa(byte *a, byte *b)
 {	bit x;
-	uint la = lenn(a);
-	uint lb = lenn(b);
 
-	set(&x, 0);
+	set(&x, lenn(a) == lenn(b));
+	for(uint i = 0; i < lenn(a) && get(x); i++) set(&x, a[i] == b[i]);
 
-	while(*a++ && *b++ && !(la - lb)) set(&x, 1);
-	if(a | b) set(&x, 0);
+
+	return x;
+}
+
+bit cmpe(byte *a, byte *b, uint len)
+{	bit x;
+	set(&x, 1);
+
+	for(uint i = 0; i < len; i++) set(&x, a[i] == b[i]);
 
 	return x;
 }

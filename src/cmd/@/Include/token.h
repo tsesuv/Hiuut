@@ -48,7 +48,7 @@ bit tknset(Token *t, tkType type, byte *d)
 {	bit x;
 
 	t->type = type;
-	t->dat = (byte *)realloc(lenn(d) * sizeof(byte));
+	t->dat = (byte *)realloc(t->dat, lenn(d) * sizeof(byte));
 
 	bytefill(t->dat, 0, 0, lenn(t->dat));
 	byteset(t->dat, d, 0, 0, lenn(d));

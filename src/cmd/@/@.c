@@ -13,38 +13,26 @@ int main(int ac, char **av)
 	{	return 0;
 	}
 
-	uint l = catlen((byte **)av, ac);
-	byte *ag = (byte *)malloc((l + ac) * sizeof(byte));
+	uint lenth = catlen((byte **)av, ac);
+	byte *ag = (byte *)malloc((lenth + ac) * sizeof(byte));
 	bytecat(ag, (byte **)av, ac);
 
-	printf("Length: %d\n", l);
-	for(uint i = 0; i < l; i++) printf("%c ($%02X)\n", ag[i], ag[i]);
+	printf("Length: %d\n", lenth);
+	for(uint i = 0; i < lenth; i++) printf("%c ($%02X)\n", ag[i], ag[i]);
 
 	byte arg_in_opt[] = "/i";
-	byte arg_in_opt2[] = "/i:";
 	uint place = 0;
-	bit flag[2];
-	set(&flag[0], 0);
-	set(&flag[1], 0);
+	bit flag[1];
+	set(&flag[0], 0); // Detect & geted /i option
 
 	// 引数チェック部分
-	for(uint i = 0, k = 0; i < l; i++)
-	{	if(get(cmp(ag[i], arg_in_opt[k])) || get(cmp(ag[i], arg_in_opt2[k])))
-		{	k++;
+	for(uint i = 0; i < lenth; i++)
+	{	if(get(cmpe(ag + i, arg_in_opt, 2)) && (get(cmp(ag[i + 2], ':')) || get(cmp(ag[i + 2], 0))))
+		{	place = i + lenn(arg_in_opt);
 			set(&flag[0], 1);
-			if(get(cmp(ag[i], 0)) || get(cmp(ag[i], ':'))) // cmpa(ag + i, arg_in_opt)みたいに書きたいよなぁ...
-			{	place = ++i;
-				printf("Detect /i: %d (p: %d)\n", i, place);
-				set(&flag[1], 1);
-			} else if(!get(flag[1])
-			{	k = 0;
-				set(&flag[0], 0);
-			}
-		} else
-		{	k = 0;
-			set(&flag[0], 0);
+			printf("Detect /i: %d (p: %d)\n", i, place);
 		}
-	} // 引数
+	}
 
 	// ファイル名獲得
 	if(get(flag[0]))
