@@ -24,6 +24,7 @@ typedef struct
 uint catlen(byte **s, uint cnt);
 uint bytecat(byte *dis, byte **src, uint cnt);
 uint byteset(byte *dis, byte *src, uint to, uint from, uint len);
+uint bytesete(byte *dis, byte *src, uint to, uint from, uint len, byte eto, byte *efrm);
 uint bytefill(byte *dis, byte fdat, uint start, uint len);
 uint getfsize(FILE *fp);
 uint len(byte *p);
@@ -60,6 +61,31 @@ uint byteset(byte *dis, byte *src, uint to, uint from, uint len)
 
 		if(dis[to] != src[i]) return to;
 
+		to++;
+	}
+
+	return len;
+}
+
+uint bytesete(byte *dis, byte *src, uint to, uint from, uint len, byte eto, byte *efrm)
+{	byte f;
+
+	for(uint i = from; i < from + len; i++)
+	{	dis[to] = src[i];
+
+		for(uint k = 0; k < lenn(efrm) - 1; k++)
+		{	if(dis[to] == efrm[k])
+			{	dis[to] = eto;
+
+				f = 1;
+				break;
+			}
+		}
+
+		if(dis[to] != src[i] && !f) return to;
+		else if(dis[to] != eto && f) return to;
+
+		f = 0;
 		to++;
 	}
 

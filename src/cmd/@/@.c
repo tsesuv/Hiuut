@@ -20,17 +20,16 @@ int main(int ac, char **av)
 	printf("Length: %d\n", lenth);
 	for(uint i = 0; i < lenth; i++) printf("%c ($%02X)\n", ag[i], ag[i]);
 
-	byte arg_in_opt[] = "/i";
 	uint place = 0;
 	bit flag[1];
-	set(&flag[0], 0); // Detect & geted /i option
+	set(&flag[0], 0); // Detect & geted /i: option
 
 	// 引数チェック部分
 	for(uint i = 0; i < lenth; i++)
-	{	if(get(cmpe(ag + i, arg_in_opt, 2)) && (get(cmp(ag[i + 2], ':')) || get(cmp(ag[i + 2], 0))))
-		{	place = i + lenn(arg_in_opt);
+	{	if(get(cmpe(ag + i, "/i:", 3)) && !get(flag[0]))
+		{	place = i + 3;
 			set(&flag[0], 1);
-			printf("Detect /i: %d (p: %d)\n", i, place);
+			printf("Detect /i: %d (p: %d, %c)\n", i, place, ag[place]);
 		}
 	}
 
@@ -41,7 +40,7 @@ int main(int ac, char **av)
 		// 領域確保
 		byte *inname = (byte *)malloc(i * sizeof(byte));
 		// 名前を引数からコピー
-		byteset(inname, ag, 0, place, i);
+		bytesete(inname, ag, 0, place, i, '_', "/\\:;");
 		printf("fname: %s, name size: %d\n", inname, i);
 		infile = fopen(inname, "rb"); // ファイルオープン
 
