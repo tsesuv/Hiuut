@@ -1,5 +1,5 @@
 /* UnSynk @ Compiler */
-/* Build: 20260519XXXX */
+/* Build: 20260520XXXX */
 /* Created by UnSynk, tsesuv notsel */
 
 #include "Include/@.h"
@@ -20,28 +20,35 @@ int main(int ac, char **av)
 	printf("Length: %d\n", lenth);
 	for(uint i = 0; i < lenth; i++) printf("%c ($%02X)\n", ag[i], ag[i]);
 
-	uint place = 0;
-	bit flag[1];
+	uint placeInName = 0;
+	uint placeOutName = 0;
+	bit flag[2];
 	set(&flag[0], 0); // Detect & geted /i: option
+	set(&flag[1], 0); // Detect & geted /o: option
 
 	// 引数チェック部分
 	for(uint i = 0; i < lenth; i++)
 	{	if(get(cmpe(ag + i, "/i:", 3)) && !get(flag[0]))
-		{	place = i + 3;
+		{	placeInName = i + 3;
 			set(&flag[0], 1);
-			printf("Detect /i: %d (p: %d, %c)\n", i, place, ag[place]);
+			printf("Detect /i: %d (p: %d, %s)\n", i, placeInName, &ag[placeInName]);
+		}
+		if(get(cmpe(ag + i, "/o:", 3)) && !get(flag[1]))
+		{	placeOutName = i + 3;
+			set(&flag[1], 1);
+			printf("Detect /o: %d (p: %d, %s)\n", i, placeOutName, &ag[placeOutName]);
 		}
 	}
 
-	// ファイル名獲得
+	// ファイル名獲得（in）
 	if(get(flag[0]))
-	{	uint i = lenn(ag + place);
+	{	uint letterInName = lenn(ag + placeInName);
 
 		// 領域確保
-		byte *inname = (byte *)malloc(i * sizeof(byte));
+		byte *inname = (byte *)malloc(letterInName * sizeof(byte));
 		// 名前を引数からコピー
-		bytesete(inname, ag, 0, place, i, '_', "/\\:;");
-		printf("fname: %s, name size: %d\n", inname, i);
+		bytesete(inname, ag, 0, placeInName, letterInName, '_', "/\\:;");
+		printf("fname: %s, name size: %d\n", inname, letterInName);
 		infile = fopen(inname, "rb"); // ファイルオープン
 
 		if(!infile) // ファイルがなかった場合
@@ -62,14 +69,39 @@ int main(int ac, char **av)
 			Token t = tknnew();
 			tknset(&t, TK_IDR, "MDL");
 			printf("Token: %s(%s)\n", type2str(t.type), t.dat);
-			tknset(&t, TK_NME, "case0");
+			tknset(&t, TK_STR, "Hola");
 			printf("Token: %s(%s)\n", type2str(t.type), t.dat);
+			tknsplit(&t, "Hello world from tokenalizer", 3);
+			printf("Token: %s(%s)\n", type2str(t.type), t.dat);
+
 			tknfree(&t);
 
 			free(text);
 		}
 
 		free(inname);
+	}
+	// ファイル名獲得（out）
+	if(get(flag[1]))
+	{	uint letterOutName = lenn(ag + placeOutName);
+
+		byte *outname = (byte *)malloc(letterOutName * sizeof(byte));
+		bytesete(outname, ag, 0, placeOutName, letterOutName, '_', "/\\:;");
+		printf("fname: %s, name size: %d\n", outname, letterOutName);
+		outfile = fopen(outname, "wb");
+
+		if(outfile)
+		{	uint fsize = 1;
+			byte *binary = (byte *)malloc(fsize * sizeof(byte));
+
+			fwrite(binary, sizeof(byte), fsize, outfile);
+			fclose(outfile);
+
+			free(binary);
+
+		}
+
+		free(outname);
 	}
 
 	free(ag);

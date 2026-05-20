@@ -1,5 +1,5 @@
 /* UnSynk @ Header */
-/* Build: 20260519XXXX */
+/* Build: 20260520XXXX */
 /* Created by UnSynk, tsesuv notsel */
 
 #ifndef AT_H
@@ -113,15 +113,15 @@ uint getfsize(FILE *fp)
 }
 
 uint len(byte *p)
+{	return lenn(p) - 1;
+}
+
+uint lenn(byte *p)
 {	byte *t = p;
 
 	while(*p++);
 
-	return p - t - 1;
-}
-
-uint lenn(byte *p)
-{	return len(p) + 1;
+	return p - t;
 }
 
 bit cmp(byte a, byte b)
@@ -146,7 +146,7 @@ bit cmpe(byte *a, byte *b, uint len)
 {	bit x;
 	set(&x, 1);
 
-	for(uint i = 0; i < len; i++) set(&x, a[i] == b[i]);
+	for(uint i = 0; i < len && get(x); i++) set(&x, a[i] == b[i]);
 
 	return x;
 }
