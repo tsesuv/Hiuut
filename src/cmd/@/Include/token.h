@@ -74,6 +74,8 @@ uint tknsplit(Token *t, byte *txt, uint cnt)
 
 		chunk[i] = *txt;
 
+		if(get(cmp(*txt, '\t'))) *txt = ' ';
+
 		if(get(cmp(*txt, ' ')))
 		{	chunk[i] = 0;
 			if(k == cnt)

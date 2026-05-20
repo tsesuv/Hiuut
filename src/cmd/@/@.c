@@ -74,6 +74,27 @@ int main(int ac, char **av)
 			tknsplit(&t, "Hello world from tokenalizer", 3);
 			printf("Token: %s(%s)\n", type2str(t.type), t.dat);
 
+			// どっかでセグフォだし不安定だし、うーん一旦理論から攻め直したほうがいいのかもしれない
+			uint k = 0;
+			for(uint i = 0; i < fsize; i++)
+			{	printf("%d\n", i);
+				if(get(cmpe(text + i, ">>?", 3)))
+				{	printf("comment in\n");
+					i += 3;
+					while(!get(cmpe(text + i, "?<<", 3)) && i < fsize) i++;
+					printf("comment out\n");
+				}
+	
+				tknsplit(&t, text + i, k);
+				if(t.dat[len(t.dat)] == '\n') t.dat[len(t.dat)] = 0;
+
+				printf("%s\n", t.dat);
+
+				// while((*(text + i + 1) == ' ' || *(text + i + 1) == '\n') && i < fsize) i++;
+
+				k++;
+			}
+
 			tknfree(&t);
 
 			free(text);
