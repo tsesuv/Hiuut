@@ -75,7 +75,7 @@ int main(int ac, char **av)
 			printf("Token: %s(%s)\n", type2str(t.type), t.dat);
 
 			// どっかでセグフォだし不安定だし、うーん一旦理論から攻め直したほうがいいのかもしれない
-			uint k = 0;
+			/* uint k = 0;
 			for(uint i = 0; i < fsize; i++)
 			{	printf("%d\n", i);
 				if(get(cmpe(text + i, ">>?", 3)))
@@ -94,6 +94,7 @@ int main(int ac, char **av)
 
 				k++;
 			}
+			*/
 
 			tknfree(&t);
 
