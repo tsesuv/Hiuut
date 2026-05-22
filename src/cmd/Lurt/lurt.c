@@ -1,4 +1,4 @@
-/* Lurt - Line editor, text editor */
+/* Lurt - Line text editor */
 /* Build: 20260505XXXX */
 /* Created by UnSynk, tsesuv notsel */
 
