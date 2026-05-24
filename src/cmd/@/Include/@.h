@@ -26,6 +26,7 @@ uint bytecat(byte *dis, byte **src, uint cnt);
 uint byteset(byte *dis, byte *src, uint to, uint from, uint len);
 uint bytesete(byte *dis, byte *src, uint to, uint from, uint len, byte eto, byte *efrm);
 uint bytefill(byte *dis, byte fdat, uint start, uint len);
+byte *getcnk(byte *p, byte *dem, uint cnt);
 uint getfsize(FILE *fp);
 uint len(byte *p);
 uint lenn(byte *p);
@@ -100,6 +101,33 @@ uint bytefill(byte *dis, byte fdat, uint start, uint len)
 	}
 
 	return len;
+}
+
+// NULL門番文字列を返す、引数で何個目のを返すか制御。これが一番やりやすいんよ
+// 分割はdemに含まれる文字？
+byte *getcnk(byte *p, byte *dem, uint cnt)
+{	byte *chank = (byte *)malloc(sizeof(byte));
+	uint n = 0;
+	bit f;
+	set(&f, 0);
+
+	for(uint k = 0; k < lenn(p); k++)
+	{	for(uint i = 0; i < len(dem); i++)
+		{	if(get(cmp(p[k], dem[i])))
+			{	if(n == cnt)
+				{	set(&f, 0);
+
+					break;
+				}
+
+				n++;
+			}
+		}
+
+		if(get(f)) break;
+	}
+
+	return chank;
 }
 
 uint getfsize(FILE *fp)

@@ -60,53 +60,6 @@ bit tknset(Token *t, tkType type, byte *d)
 	return x;
 }
 
-uint tknsplit(Token *t, byte *txt, uint cnt)
-{	uint i = 0;
-	uint k = 0;
-	uint msize = 1;
-	byte *chunk = (byte *)malloc(sizeof(byte));
-
-	while(1)
-	{	if(msize < i)
-		{	msize *= 2;
-			chunk = (byte *)realloc(chunk, msize * sizeof(byte));
-		}
-
-		chunk[i] = *txt;
-
-		if(get(cmp(*txt, '\t'))) *txt = ' ';
-
-		if(get(cmp(*txt, ' ')))
-		{	chunk[i] = 0;
-			if(k == cnt)
-			{	free(t->dat);
-				t->dat = chunk;
-
-				break;
-			}
-
-			msize = 1 + (i = 0);
-
-			chunk = (byte *)realloc(chunk, sizeof(byte));
-
-			k++;
-		} else i++;
-
-		txt++;
-
-		if(!txt)
-		{	chunk[i - 1] = 0;
-
-			free(t->dat);
-			t->dat = chunk;
-
-			break;
-		}
-	}
-
-	return 0;
-}
-
 bit tknfree(Token *t)
 {	bit x;
 
