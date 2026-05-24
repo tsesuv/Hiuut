@@ -1,5 +1,5 @@
 /* UnSynk @ language Token header */
-/* Build: 20260519XXXX */
+/* Build: 20260524XXXX */
 /* Created by UnSynk, tsesuv notsel */
 
 #ifndef TOKEN_H
@@ -31,7 +31,6 @@ typedef struct
 
 Token tknnew(void);
 bit tknset(Token *t, tkType type, byte *d);
-uint tknsplit(Token *t, byte *txt, uint cnt);
 bit tknfree(Token *t);
 byte *type2str(tkType type);
 
