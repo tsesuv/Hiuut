@@ -1,5 +1,5 @@
 /* UnSynk @ Compiler */
-/* Build: 20260524XXXX */
+/* Build: 20260530XXXX */
 /* Created by UnSynk, tsesuv notsel */
 
 #include "Include/@.h"
@@ -71,10 +71,6 @@ int main(int ac, char **av)
 			printf("Token: %s(%s)\n", type2str(t.type), t.dat);
 			tknset(&t, TK_STR, "Hola");
 			printf("Token: %s(%s)\n", type2str(t.type), t.dat);
-
-			// どっかでセグフォだし不安定だし、うーん一旦理論から攻め直したほうがいいのかもしれない
-			/* mkcnk(text, " \n;", "[]{}:", i);
-			*/
 
 			for(uint i = 0; i < 6; i++)
 			{	byte *smp = getcnk("Hello, world! from Chanker", " \n,;", "[]{}:", i);
