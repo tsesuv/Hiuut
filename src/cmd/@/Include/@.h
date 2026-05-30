@@ -69,7 +69,7 @@ uint byteset(byte *dis, byte *src, uint to, uint from, uint len)
 }
 
 uint bytesete(byte *dis, byte *src, uint to, uint from, uint len, byte eto, byte *efrm)
-{	byte f;
+{	byte f = 0;
 
 	for(uint i = from; i < from + len; i++)
 	{	dis[to] = src[i];
@@ -105,7 +105,7 @@ uint bytefill(byte *dis, byte fdat, uint start, uint len)
 
 // NULL門番文字列を返す、引数で何個目のを返すか制御。
 byte *getcnk(byte *p, byte *dem, byte *sp, uint cnt)
-{	byte *chank = (byte *)malloc(sizeof(byte));
+{	byte *chank = (byte *)malloc(1 + sizeof(byte));
 	uint n = 0;
 	uint m = 0;
 	uint memsize = 1;
@@ -135,7 +135,7 @@ byte *getcnk(byte *p, byte *dem, byte *sp, uint cnt)
 
 		if(memsize <= m)
 		{	memsize *= 2;
-			chank = (byte *)realloc(chank, sizeof(byte) * memsize);
+			chank = (byte *)realloc(chank, 1 + memsize * sizeof(byte));
 		}
 
 		if(get(f[0]))
