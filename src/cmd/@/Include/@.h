@@ -26,7 +26,7 @@ uint bytecat(byte *dis, byte **src, uint cnt);
 uint byteset(byte *dis, byte *src, uint to, uint from, uint len);
 uint bytesete(byte *dis, byte *src, uint to, uint from, uint len, byte eto, byte *efrm);
 uint bytefill(byte *dis, byte fdat, uint start, uint len);
-byte *getcnk(byte *p, byte *dem, uint cnt);
+byte *getcnk(byte *p, byte *dem, byte *sp, uint cnt);
 uint getfsize(FILE *fp);
 uint len(byte *p);
 uint lenn(byte *p);
@@ -103,29 +103,58 @@ uint bytefill(byte *dis, byte fdat, uint start, uint len)
 	return len;
 }
 
-// NULL門番文字列を返す、引数で何個目のを返すか制御。これが一番やりやすいんよ
-// 分割はdemに含まれる文字？
-byte *getcnk(byte *p, byte *dem, uint cnt)
+// NULL門番文字列を返す、引数で何個目のを返すか制御。
+byte *getcnk(byte *p, byte *dem, byte *sp, uint cnt)
 {	byte *chank = (byte *)malloc(sizeof(byte));
 	uint n = 0;
-	bit f;
-	set(&f, 0);
+	uint m = 0;
+	uint memsize = 1;
+	bit f[3];
+	set(&f[0], 0);
+	set(&f[1], 0);
+	set(&f[2], 0);
 
 	for(uint k = 0; k < lenn(p); k++)
-	{	for(uint i = 0; i < len(dem); i++)
+	{	set(&f[1], 0);
+
+		for(uint i = 0; i < len(dem); i++)
 		{	if(get(cmp(p[k], dem[i])))
+			{	set(&f[1], 1);
+				if(n == cnt)
+				{	set(&f[0], 0);
+				}
+
+				if(get(f[1]) && !get(f[2])) n++;
+
+				break;
+			} else if(n == cnt && !get(f[1])) set(&f[0], 1);
+		}
+
+		if(cnt < n) break;
+
+		if(memsize <= m)
+		{	memsize *= 2;
+			chank = (byte *)realloc(chank, sizeof(byte) * memsize);
+		}
+
+		if(get(f[0])) chank[m++] = p[k];
+
+		for(uint i = 0; i < len(sp); i++)
+		{	if(get(cmp(p[k], sp[i])))
 			{	if(n == cnt)
-				{	set(&f, 0);
+				{	set(&f[0], 1);
 
 					break;
 				}
 
 				n++;
-			}
+			} else if(n == cnt) set(&f[0], 1);
 		}
 
-		if(get(f)) break;
+		set(&f[2], get(f[1]));
 	}
+
+	chank[m] = 0;
 
 	return chank;
 }

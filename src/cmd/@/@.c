@@ -71,12 +71,16 @@ int main(int ac, char **av)
 			printf("Token: %s(%s)\n", type2str(t.type), t.dat);
 			tknset(&t, TK_STR, "Hola");
 			printf("Token: %s(%s)\n", type2str(t.type), t.dat);
-			tknsplit(&t, "Hello world from tokenalizer", 3);
-			printf("Token: %s(%s)\n", type2str(t.type), t.dat);
 
 			// どっかでセグフォだし不安定だし、うーん一旦理論から攻め直したほうがいいのかもしれない
-			/* mkcnk(text, " []{}:;");
+			/* mkcnk(text, " \n;", "[]{}:", i);
 			*/
+
+			for(uint i = 0; i < 6; i++)
+			{	byte *smp = getcnk("Hello, world! from Chanker", " \n,;", "[]{}:", i);
+				printf("Chank[%d]: %s\n", i, smp);
+				free(smp);
+			}
 
 			tknfree(&t);
 
