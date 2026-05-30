@@ -109,10 +109,11 @@ byte *getcnk(byte *p, byte *dem, byte *sp, uint cnt)
 	uint n = 0;
 	uint m = 0;
 	uint memsize = 1;
-	bit f[3];
+	bit f[4];
 	set(&f[0], 0);
 	set(&f[1], 0);
 	set(&f[2], 0);
+	set(&f[3], 0);
 
 	for(uint k = 0; k < lenn(p); k++)
 	{	set(&f[1], 0);
@@ -137,19 +138,22 @@ byte *getcnk(byte *p, byte *dem, byte *sp, uint cnt)
 			chank = (byte *)realloc(chank, sizeof(byte) * memsize);
 		}
 
-		if(get(f[0])) chank[m++] = p[k];
+		if(get(f[0]))
+		{	if(!get(cmp(p[k], '\t'))) chank[m++] = p[k];
+		}
 
 		for(uint i = 0; i < len(sp); i++)
 		{	if(get(cmp(p[k], sp[i])))
 			{	if(n == cnt)
-				{	set(&f[0], 1);
+				{	set(&f[3], 1);
+					chank[m++] = p[k];
 
 					break;
 				}
 
 				n++;
 			} else if(n == cnt) set(&f[0], 1);
-		}
+		} if(get(f[3])) break;
 
 		set(&f[2], get(f[1]));
 	}

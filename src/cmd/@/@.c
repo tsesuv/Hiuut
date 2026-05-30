@@ -72,9 +72,10 @@ int main(int ac, char **av)
 			tknset(&t, TK_STR, "Hola");
 			printf("Token: %s(%s)\n", type2str(t.type), t.dat);
 
-			for(uint i = 0; i < 6; i++)
-			{	byte *smp = getcnk("Hello, world! from Chanker", " \n,;", "[]{}:", i);
-				printf("Chank[%d]: %s\n", i, smp);
+			for(uint i = 0; i < 15; i++)
+			{	byte *smp = getcnk("abc def, ghi,jkl {mno{pqr}stu}vw:xyz", " \n,;[]{}:", "[]{}:", i);
+				// abc/def/ghi/jkl/{/mno/{/pqr/}/stu/}/vw/:/xyz
+				printf("Chank[%2d]: %s\n", i, smp);
 				free(smp);
 			}
 
