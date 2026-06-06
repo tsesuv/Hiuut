@@ -12,8 +12,8 @@ mdl intro ; Javaのクラス的なのを採用
 		sys:txoutln ~str demo ; ~は型変換演算子
 
 		int demo2 <- 16
-		int List[] <- intro:moreFunction demo, demo2
-		sys:txoutln ~str List[0]
+		int List_(2) <- intro:moreFunction demo, demo2
+		sys:txoutln ~str List_(0) ; 配列はdat_(key)。宣言もおんなじような形がいいよね。要素数を指定して固定できるようにもしたいよなぁ、でも可変的にも扱えてもいいなぁ...
 
 		int k <- 0, k++, for k < 5
 		{	int i <- 0, i++, for i < 10
@@ -42,7 +42,7 @@ mdl intro ; Javaのクラス的なのを採用
 
 		ret 0 ; return。
 
-	int moreFunction[] private ags ag
+	int moreFunction_(2) private ags ag
 	{	int tmp <- sys:getag ag, 0  ; こうなるのかなぁ・・・？わからん。
 		int tmp2 <- sys:getag ag, 1 ; ただこれならいろいろ便利っちゃ便利ではあるかなぁ。存在しない引数を受け取る可能性はあれど、
 									; 呼び出し側でxx:yy ,ag2みたいに書くことでデフォルト引数みたいなこともできないことはないからなぁ

@@ -118,6 +118,8 @@ byte *getcnk(byte *p, byte *dem, byte *sp, uint cnt)
 	for(uint k = 0; k < lenn(p); k++)
 	{	set(&f[1], 0);
 
+		// printf("cnktrc: %d, c: %c ($%02X)\n", n, p[k], p[k]);
+
 		for(uint i = 0; i < len(dem); i++)
 		{	if(get(cmp(p[k], dem[i])))
 			{	set(&f[1], 1);

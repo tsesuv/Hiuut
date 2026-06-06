@@ -1,0 +1,34 @@
+(Sector 0)
+"HtFS",0,0(6B)
+Build(4B)
+
+SectorMode(1Byte)
+SectorSize(4Byte)
+(Reserved)(1B)
+
+
+
+Flag(1B)
+VolumeLabel(30Byte)
+NULL(1Byte)
+
+
+
+FNameMode(1Byte)
+FNameSize(4Byte)
+
+
+
+PointerSize(2Byte)
+VolumeSize(10Byte)
+RootStart(4Byte)
+
+
+
+(432B)
+(Sector 1)
+
+
+(PBR Code)(510B)
+
+0x55AA(2B)
