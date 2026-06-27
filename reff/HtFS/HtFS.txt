@@ -1,16 +1,16 @@
 (Sector 0)
-magic: "HtFS",0,0(6Byte)     ; MasicNumber "HtFS\0\0"
+magic: "HtFS",0,0(6Byte) ; MasicNumber "HtFS\0\0"
 build(6Byte)
 
-sectorMode(1Byte)     ; 0: Any, 1: 512, 2: 1024, 3: 4096, 4: 8192, 5: 16384, 6: 65536, 7: 1048576
-fNameMode(1Byte)      ; 0: any.any, 1: 8.3, 2: 8.6, 3: 16.6, 4: 64.6, 5: 64.32, 6: 128.32, 7: 128.64, 8: 256.128, 9: 256.256, 10: 1024.256
-volumeInfoFlag(1Byte) ; isBootable, isDataEncryptoned, isDeleted, hasMetaProperty, Reserved, Reseved, Reseved, Reseved
-extendedVFlag(1Byte)  ; fileNECharSet(halfByte), volumeLCharSet(halfByte)
-                      ; [0: ASCII 7Bit, 1: Reseved, 2: JIS, 3: UTF-8, 4: UTF-16(Unicode)]
+sectorMode(1Byte)        ; 0: Any, 1: 512, 2: 1024, 3: 4096, 4: 8192, 5: 16384, 6: 65536, 7: 1048576
+fNameMode(1Byte)         ; 0: any.any, 1: 8.3, 2: 8.6, 3: 16.6, 4: 64.6, 5: 64.32, 6: 128.32, 7: 128.64, 8: 256.128, 9: 256.256, 10: 1024.256
+volumeInfoFlag(1Byte)    ; isBootable, isDataEncryptoned, isDeleted, hasMetaProperty, Reserved, Reseved, Reseved, Reseved
+extendedVFlag(1Byte)     ; fileNECharSet(halfByte), volumeLCharSet(halfByte)
+                         ; [0: ASCII 7Bit, 1: Reseved, 2: JIS, 3: UTF-8, 4: UTF-16(Unicode)]
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
@@ -19,7 +19,7 @@ NULL(1Byte)
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
@@ -27,7 +27,7 @@ rootStart(32Byte)
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
@@ -37,22 +37,22 @@ volumeSize(32Byte)
 
 pointerSize(2Byte)
 
-fNameSize(4Byte)      ; If fNameMode: 0, and setting custom size
-fExtSize(2Byte)       ; If fNameMode: 0, and setting custom size
-                      ; e.g. 10.5, fNameSize: 9, FExtSize: 4 is not priset, must setting any.any -> 9, 4
-sectorSize(8Byte)     ; If sectorMode: 0, and setting custom size
+fNameSize(4Byte)         ; If fNameMode: 0, and setting custom size
+fExtSize(2Byte)          ; If fNameMode: 0, and setting custom size
+                         ; e.g. 10.5, fNameSize: 9, FExtSize: 4 is not priset, must setting any.any -> 9, 4
+sectorSize(8Byte)        ; If sectorMode: 0, and setting custom size
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
-volumeID(32Byte)      ; Hash value, Collision countmeasure: User can input advance seed value
+volumeID(32Byte)         ; Hash value, Collision countmeasure: User can input advance seed value
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
@@ -60,27 +60,27 @@ volumeID(32Byte)      ; Hash value, Collision countmeasure: User can input advan
 
 
 
-$0E                   ; End
-$08                   ; Of Header (H=$8)
+$0E                      ; End
+$08                      ; Of Header (H=$8)
 
-;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (Sector 1)
 (PBR Code)(510Byte)
 
-$55                   ; If 'isBootable' = true
-$AA                   ; If 'isBootable' = true
+$55                      ; If 'isBootable' = true
+$AA                      ; If 'isBootable' = true
 
-;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (Sector 2+)
 
 (fileName)
-(flag)                ; isDirectory, isDDDirectory, isEndOfDirectoryElement, Reseved, Reseved, Reseved, Reseved, Reseved
-                      ; DD: Duble dot, '..'
-(skipPointer)         ; If 'isDirectory' = true, Skip to: End of Directory + 1
-                      ; else, Skip to: End of fileend + 1
-(metaData)            ; If 'hasMetaProperty' = true exist feed, else not exist.
-(data)
-(chainPointer)        ; Next sector, If last element: NULL
-(parentPointer)       ; '..', If root dir:  NULL
+(flag)                   ; isDirectory, isDDDirectory, isEndOfDirectoryElement, Reseved, Reseved, Reseved, Reseved
+                         ; DD: Duble dot, '..'
+(skipPointer)            ; If 'isDirectory' = true, Skip to: End of Directory + 1
+                         ; else, Skip to: End of fileend + 1
+(metaData)               ; If 'hasMetaProperty' = true exist feed, else not exist.
+(data)                   ; If (sectorSize - pointerSize - fileExtData) < dataSize use next sector, and write address to last pointerSize
+(chainPointer)           ; Next sector, If last element: NULL
+(parentPointer)          ; '..', If root dir:  NULL

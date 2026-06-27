@@ -6,19 +6,19 @@ mov es, ax
 
 mov si, msg
 
-print:
+print: ; str: si, str is terminated $0
 	lodsb
-	or al, al
-	jz printEnd
+
+	test al, al
+	jz return
+
 	mov ah, 0x0E
 	int 0x10
+
 	jmp print
 
-	printEnd:
-;		hlt
-;		jmp printEnd
-		mov si, msg
-		jmp print
+return:
+	ret
 
 msg:
 	db "Hello, welcome to OS-ish!", 0x0D, 0x0A, 0x0

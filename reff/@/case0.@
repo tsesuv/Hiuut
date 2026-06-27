@@ -1,8 +1,8 @@
 mdl case0
-{	int main public
-	{	ret #0
-	}
-}
+:[	int main public
+	:[	ret #0
+	>
+>
 
 >>?
 トークンで分解したもの　はcase0.tknを参照のこと
